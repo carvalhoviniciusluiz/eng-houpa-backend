@@ -7,6 +7,7 @@
 .data
 .docker
 package-lock.json
+/docker
 
 # Logs
 logs

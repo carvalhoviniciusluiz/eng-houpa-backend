@@ -4,9 +4,6 @@ networks:
   app-network:
     driver: bridge
 
-volumes:
-  my-db:
-
 services:
   api:
     container_name: $APP_CONTAINER_NAME
@@ -33,6 +30,6 @@ services:
     expose:
       - 3306
     volumes:
-      - my-db:/var/lib/mysql
+      - ./docker/db:/var/lib/mysql
     networks:
       - app-network
