@@ -25,7 +25,11 @@
     "test:e2e": "jest --config ./test/jest-e2e.json --detectOpenHandles",
     "jest:clear": "jest --clearCache",
     "update:packages": "yarn ncu -u",
-    "prisma": "prisma"
+    "prisma": "prisma",
+    "prisma:studio": "prisma studio",
+    "prisma:db:create": "prisma migrate dev",
+    "prisma:db:migrate": "prisma migrate dev --name",
+    "prisma:db:seed": "prisma db seed"
   },
   "husky": {
     "hooks": {
@@ -34,10 +38,14 @@
       "pre-push": "yarn test:ci"
     }
   },
+  "prisma": {
+    "seed": "ts-node prisma/seed.ts"
+  },
   "dependencies": {
     "@nestjs/common": "^8.4.4",
     "@nestjs/config": "^2.0.0",
     "@nestjs/core": "^8.4.4",
+    "@types/faker": "5.5.9",
     "@nestjs/platform-express": "^8.4.4",
     "@nestjs/swagger": "^5.2.1",
     "@prisma/client": "3.12.0",
@@ -48,6 +56,7 @@
     "cors": "^2.8.5",
     "dotenv": "^16.0.0",
     "express-rate-limit": "^6.3.0",
+    "faker": "5.5.3",
     "helmet": "^5.0.2",
     "nest": "^0.1.6",
     "prisma": "^3.12.0",
