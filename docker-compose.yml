@@ -1,0 +1,38 @@
+version: '3.8'
+
+networks:
+  app-network:
+    driver: bridge
+
+volumes:
+  my-db:
+
+services:
+  api:
+    container_name: $APP_CONTAINER_NAME
+    build:
+      context: .
+    tty: true
+    volumes:
+      - ./:/nest
+    ports:
+      - $APP_PORT:$APP_PORT
+      - $APP_DEBUG_PORT:$APP_DEBUG_PORT
+    networks:
+      - app-network
+    command: yarn start:debug:docker
+
+  mysql:
+    image: mysql:5.7
+    restart: always
+    environment:
+      MYSQL_DATABASE: $MYSQL_DATABASE
+      MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
+    ports:
+      - 3306:3306
+    expose:
+      - 3306
+    volumes:
+      - my-db:/var/lib/mysql
+    networks:
+      - app-network
