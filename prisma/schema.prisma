@@ -11,8 +11,12 @@ datasource db {
 }
 
 model User {
-  id           Int     @id @default(autoincrement())
-  email        String  @unique
-  name         String?
-  accept_terms Boolean @default(false)
+  id          String    @id @default(uuid())
+  email       String    @unique @db.VarChar(200)
+  name        String?   @db.VarChar(200)
+  acceptTerms Boolean   @default(false) @map("accept_terms")
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+
+  @@index([email, name])
 }
