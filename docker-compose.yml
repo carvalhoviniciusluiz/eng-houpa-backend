@@ -26,9 +26,9 @@ services:
       MYSQL_DATABASE: $MYSQL_DATABASE
       MYSQL_ROOT_PASSWORD: $MYSQL_ROOT_PASSWORD
     ports:
-      - 3306:3306
+      - $MYSQL_PORT:$MYSQL_PORT
     expose:
-      - 3306
+      - $MYSQL_PORT
     volumes:
       - ./docker/db:/var/lib/mysql
     networks:

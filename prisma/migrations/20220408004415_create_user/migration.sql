@@ -6,6 +6,7 @@ CREATE TABLE `User` (
     `accept_terms` BOOLEAN NOT NULL DEFAULT false,
     `created_at` DATETIME(3) NULL DEFAULT CURRENT_TIMESTAMP(3),
     `updated_at` DATETIME(3) NULL,
+    `deleted` DATETIME(3) NULL,
 
     UNIQUE INDEX `User_email_key`(`email`),
     INDEX `User_email_name_idx`(`email`, `name`),

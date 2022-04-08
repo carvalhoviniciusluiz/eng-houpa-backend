@@ -17,6 +17,7 @@ model User {
   acceptTerms Boolean   @default(false) @map("accept_terms")
   createdAt   DateTime? @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
+  deleted     DateTime?
 
   @@index([email, name])
 }
