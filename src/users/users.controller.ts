@@ -1,5 +1,6 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Patch, Post, Query } from '@nestjs/common';
 import { User as UserModel } from '@prisma/client';
+import { UserPaginateDTO, UserRequestDTO } from '~/users/dtos';
 import { UsersService } from '~/users/users.service';
 
 @Controller('users')
@@ -7,11 +8,12 @@ export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
   @Get()
-  async getAll(): Promise<UserModel[]> {
+  async getAll(@Query() params: UserPaginateDTO): Promise<UserModel[]> {
+    const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' } } = params;
     return this.userService.getAll({
-      skip: 1, // page
-      take: 20, // limit,
-      orderBy: { name: 'asc' }
+      skip,
+      take,
+      orderBy
     });
   }
 
@@ -23,12 +25,12 @@ export class UsersController {
   }
 
   @Post()
-  async createUser(@Body() userData: { name?: string; email: string }): Promise<UserModel> {
+  async createUser(@Body() userData: UserRequestDTO): Promise<UserModel> {
     return this.userService.create(userData);
   }
 
   @Patch('/:id')
-  async updateUser(@Param('id') id: string, @Body() userData: { name?: string; email: string }): Promise<UserModel> {
+  async updateUser(@Param('id') id: string, @Body() userData: UserRequestDTO): Promise<UserModel> {
     return this.userService.update({
       where: {
         id
