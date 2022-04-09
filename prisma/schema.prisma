@@ -21,6 +21,25 @@ model User {
 
   passwordHashed String? @map("password_hashed") @db.VarChar(200)
 
+  Products Product[]
+
   @@index([email, name])
   @@map("users")
+}
+
+model Product {
+  id          String    @id @default(uuid())
+  name        String    @db.VarChar(200)
+  description String?   @db.Text()
+  ref         String    @unique @db.VarChar(50)
+  price       Decimal   @db.Decimal(12, 2)
+  createdAt   DateTime? @default(now()) @map("created_at")
+  updatedAt   DateTime? @updatedAt @map("updated_at")
+  deleted     DateTime?
+
+  userId String @map("user_id")
+  user   User   @relation(fields: [userId], references: [id])
+
+  @@index([name, ref])
+  @@map("products")
 }

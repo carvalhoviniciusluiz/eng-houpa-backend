@@ -1,10 +1,16 @@
 import { PrismaClient } from '@prisma/client';
-import { generateUserList } from './data';
+import { generateProductList, generateUserList } from './data';
 const prisma = new PrismaClient();
 
 const main = async () => {
   await prisma.user.createMany({
     data: generateUserList()
+  });
+
+  const userList = await prisma.user.findMany();
+
+  await prisma.product.createMany({
+    data: generateProductList(userList.map(user => ({ id: user.id })))
   });
 };
 
