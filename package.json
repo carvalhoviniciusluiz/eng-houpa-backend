@@ -27,8 +27,8 @@
     "update:packages": "yarn ncu -u",
     "prisma": "prisma",
     "prisma:studio": "prisma studio",
-    "prisma:db:create": "prisma migrate dev",
     "prisma:db:migrate": "prisma migrate dev --name",
+    "prisma:db:push": "prisma db push",
     "prisma:db:seed": "prisma db seed"
   },
   "husky": {
