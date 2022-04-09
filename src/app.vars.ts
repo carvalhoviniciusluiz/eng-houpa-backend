@@ -14,3 +14,8 @@ export const APP_BACKEND_API_URL = configService.get<string>('APP_BACKEND_API_UR
 export const IS_PROD = NODE_ENV === 'production';
 export const IS_TEST = NODE_ENV === 'test';
 export const IS_DEV = !IS_TEST && !IS_PROD;
+
+export const JWT_SECRET = configService.get<string>('JWT_SECRET');
+export const JWT_SECRET_EXPIRES_IN = configService.get<string>('JWT_SECRET_EXPIRES_IN');
+export const JWT_SECRET_REFRESHTOKEN = configService.get<string>('JWT_SECRET_REFRESHTOKEN');
+export const JWT_SECRET_REFRESHTOKEN_EXPIRES_IN = configService.get<string>('JWT_SECRET_REFRESHTOKEN_EXPIRES_IN');
