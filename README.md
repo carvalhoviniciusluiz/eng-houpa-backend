@@ -37,8 +37,14 @@ __DETALHAMENTO__
 | APP_VERSION | Define a versão atual do projeto.
 | APP_VERSION_PREFIX | Define o prefixo da versão, default ``v``.
 | APP_CONTAINER_NAME | Define o nome do container que será gerado pelo docker.
-| APP_BACKEND_API_URL_PROD | Define a URL da api do backend em produção.
-| CONVERSION_API_URL_BCB | Define a URL da api de conversão entre moedas.
+| MYSQL_DATABASE | Define o nome do banco de dados.
+| MYSQL_ROOT_PASSWORD | Define a senha do usuário root no mysql.
+| MYSQL_PORT | Define a porta usada pelo banco de dados.
+| JWT_SECRET | Define a palavra-secreta usada para gerar o token de acesso.
+| JWT_SECRET_EXPIRES_IN | Define o tempo de vida do token.
+| JWT_SECRET_REFRESHTOKEN | Define a palavra-secreta usada para gerar o refresh-token.
+| JWT_SECRET_REFRESHTOKEN_EXPIRES_IN | Define o tempo de vida do refresh-token.
+| DATABASE_URL | Define a url de acesso ao banco de dados.
 
 </details>
 
@@ -253,10 +259,17 @@ Este projeto está configurado para trabalhar com a estrutura de módulos e um m
 yarn
 ```
 
-### **Tests:** <a name="tests"></a>
+### **Test:** <a name="tests"></a>
 ```shell
-yarn test:ci && yarn test:e2e
+yarn test:ci
 ```
+
+**Note:** O resultado deve ser igual a imagem:
+
+<p align="left">
+  <img src="https://user-images.githubusercontent.com/22005684/162594026-705e04fd-829e-49d6-bc38-3a8786dbbaa8.png" alt="Preview" height="450" />
+</p>
+
 ### **Rodando o Projeto:** <a name="run"></a>
 
 Para subir o docker do projeto rode:
@@ -270,3 +283,32 @@ yarn start:dev
 __NOTA__: caso tenha dúvidas veja a sessão `Configurações > Dotenv` & `Configurações > Scripts`
 
 ### **Test API:** <a name="api"></a>
+
+#### Root
+*   `#GET /` - Url sem serventia =P.
+
+#### Auth
+*   `#POST /v1/auth` - Rota não autenticada, devolve as credenciais de acesso de um usuário.
+*   `#POST /v1/auth/signup` - Rota não autenticada, para registro de novos usuários.
+
+#### Users
+*   `#GET /v1/users` - Rota autenticada, devolve uma lista de usuários paginados.
+*   `#POST /v1/users` - Rota autenticada, registra novos usuários.
+*   `#GET /v1/users/{id}` - Rota autenticada, devolve um usuário pelo id.
+*   `#PATCH /v1/users/{id}` - Rota autenticada, atualiza um usuário pelo id.
+*   `#DELETE /v1/users/{id}` - Rota autenticada, remove um usuário pelo id.
+
+#### Products
+*   `#GET /v1/products` - Rota autenticada, devolve uma lista de produtos paginados.
+*   `#POST /v1/products` - Rota autenticada, registra novos produtos.
+*   `#GET /v1/products/{id}` - Rota autenticada, devolve um produto pelo id.
+*   `#PATCH /v1/products/{id}` - Rota autenticada, atualiza um produto pelo id.
+*   `#DELETE /v1/products/{id}` - Rota autenticada, remove um produto pelo id.
+
+**Note:** Toda a documentação está disponível via [Swagger](https://swagger.io/), você pode [clicar aqui](https://eng-houpa-backend.herokuapp.com/api) para acessar.
+
+## License
+
+[MIT](http://opensource.org/licenses/MIT)
+
+Copyright (c) 2022-present
