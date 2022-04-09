@@ -125,7 +125,9 @@
       "!<rootDir>/*.ts",
       "!<rootDir>/**/index.ts",
       "!<rootDir>/**/*.module.ts",
-      "!<rootDir>/config/**/*"
+      "!<rootDir>/config/**/*",
+      "!<rootDir>/common/**/*",
+      "!<rootDir>/auth/strategies/**/*"
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",

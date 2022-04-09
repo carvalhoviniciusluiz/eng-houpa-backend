@@ -1,5 +1,4 @@
 import { BadRequestException, Body, Controller, Post } from '@nestjs/common';
-import { Prisma } from '@prisma/client';
 import { AuthService } from '~/auth/auth.service';
 import { AuthCredentialsRequestDTO, AuthSignUpRequestDTO } from '~/auth/dtos';
 
@@ -17,10 +16,8 @@ export class AuthController {
     try {
       await this.authService.signUp(params);
     } catch (error) {
-      if (error instanceof Prisma.PrismaClientKnownRequestError) {
-        if (error.code === 'P2002') {
-          throw new BadRequestException('A new user cannot be created with this email');
-        }
+      if (error.code === 'P2002') {
+        throw new BadRequestException('A new user cannot be created with this email');
       }
       throw error;
     }

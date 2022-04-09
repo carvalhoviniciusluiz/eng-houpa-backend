@@ -32,5 +32,5 @@ export class UserRequestDTO {
     example: true,
     default: false
   })
-  acceptTerms?: boolean = false;
+  acceptTerms?: boolean;
 }
