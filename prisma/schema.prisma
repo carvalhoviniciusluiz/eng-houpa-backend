@@ -22,4 +22,5 @@ model User {
   passwordHashed String? @map("password_hashed") @db.VarChar(200)
 
   @@index([email, name])
+  @@map("users")
 }
