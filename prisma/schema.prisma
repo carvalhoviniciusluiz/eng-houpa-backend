@@ -12,14 +12,14 @@ datasource db {
 
 model User {
   id          String    @id @default(uuid())
-  email       String    @unique @db.VarChar(200)
-  name        String?   @db.VarChar(200)
+  email       String    @unique @db.VarChar(191)
+  name        String?   @db.VarChar(191)
   acceptTerms Boolean   @default(false) @map("accept_terms")
   createdAt   DateTime? @default(now()) @map("created_at")
   updatedAt   DateTime? @updatedAt @map("updated_at")
   deleted     DateTime?
 
-  passwordHashed String? @map("password_hashed") @db.VarChar(200)
+  passwordHashed String? @map("password_hashed") @db.VarChar(191)
 
   Products Product[]
 
@@ -29,7 +29,7 @@ model User {
 
 model Product {
   id          String    @id @default(uuid())
-  name        String    @db.VarChar(200)
+  name        String    @db.VarChar(191)
   description String?   @db.Text()
   ref         String    @unique @db.VarChar(50)
   price       Decimal   @db.Decimal(12, 2)

@@ -15,7 +15,7 @@ export class AuthSignUpRequestDTO {
 
   @Expose()
   @IsEmail()
-  @MaxLength(200)
+  @MaxLength(191)
   @ApiProperty({
     type: String,
     description: 'Value for email',

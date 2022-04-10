@@ -1,7 +1,7 @@
 -- CreateTable
 CREATE TABLE `products` (
     `id` VARCHAR(191) NOT NULL,
-    `name` VARCHAR(200) NOT NULL,
+    `name` VARCHAR(191) NOT NULL,
     `description` TEXT NULL,
     `ref` VARCHAR(50) NOT NULL,
     `price` DECIMAL(12, 2) NOT NULL,

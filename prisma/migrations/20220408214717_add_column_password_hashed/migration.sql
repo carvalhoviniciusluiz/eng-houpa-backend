@@ -1,2 +1,2 @@
 -- AlterTable
-ALTER TABLE `User` ADD COLUMN `password_hashed` VARCHAR(200) NULL;
+ALTER TABLE `User` ADD COLUMN `password_hashed` VARCHAR(191) NULL;

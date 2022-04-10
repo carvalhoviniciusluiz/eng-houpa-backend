@@ -5,7 +5,7 @@ import { IsEmail, IsNotEmpty, IsString, MaxLength, MinLength } from 'class-valid
 export class AuthCredentialsRequestDTO {
   @Expose()
   @IsEmail()
-  @MaxLength(200)
+  @MaxLength(191)
   @ApiProperty({
     type: String,
     description: 'Value for email',
