@@ -255,11 +255,22 @@ Este projeto está configurado para trabalhar com a estrutura de módulos e um m
 - [Yarn](https://classic.yarnpkg.com/en/docs/install/#mac-stable)
 
 ### **Instalação:** <a name="install"></a>
-```
+No terminal faça:
+```bash
 yarn
+```
+**Note:** Após a instalação deve-se migrar o esquema de tabelas e os dados de teste para o banco de dados, faça:
+
+```bash
+#> migra as tabelas
+yarn prisma:db:push
+
+#> popula com dados de teste
+yarn prisma:db:seed
 ```
 
 ### **Test:** <a name="tests"></a>
+No terminal faça:
 ```shell
 yarn test:ci
 ```
