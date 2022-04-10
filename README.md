@@ -75,6 +75,11 @@ __DETALHAMENTO__
 | test:e2e | Executa todos os testes de integração |
 | test:clear | Limpa o cache de arquivos do jest |
 | update:packages | Inicia uma varredura para verificar bibliotecas do sistema que estejam desatualizadas |
+| prisma | Executa o prisma local instalado no projeto |
+| prisma:studio | Sobe o serviço de client do banco de dados |
+| prisma:db:migrate | Cria novas migrações com base no schema.prisma |
+| prisma:db:push | Migra as tabelas para o banco de dados |
+| prisma:db:seed | Popula as tabelas com dados de test |
 </details>
 
 <details>
