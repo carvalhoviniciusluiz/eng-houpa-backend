@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  CacheInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Product as ProductModel, User as UserModel } from '@prisma/client';
@@ -13,6 +25,7 @@ import { ProductsService } from '~/products/products.service';
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
+  @UseInterceptors(CacheInterceptor)
   @Get()
   async getAll(@Query() params: ProductPaginateDTO): Promise<ProductModel[]> {
     const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' } } = params;

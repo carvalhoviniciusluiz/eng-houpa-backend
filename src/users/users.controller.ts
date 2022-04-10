@@ -1,4 +1,16 @@
-import { Body, Controller, Delete, Get, Param, Patch, Post, Query, UseGuards } from '@nestjs/common';
+import {
+  Body,
+  CacheInterceptor,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+  Query,
+  UseGuards,
+  UseInterceptors
+} from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { User as UserModel } from '@prisma/client';
@@ -12,6 +24,7 @@ import { UsersService } from '~/users/users.service';
 export class UsersController {
   constructor(private readonly userService: UsersService) {}
 
+  @UseInterceptors(CacheInterceptor)
   @Get()
   async getAll(@Query() params: UserPaginateDTO): Promise<UserModel[]> {
     const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' } } = params;
