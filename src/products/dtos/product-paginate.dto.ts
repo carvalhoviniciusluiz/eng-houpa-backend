@@ -1,14 +1,24 @@
-import { ApiProperty, ApiPropertyOptional } from '@nestjs/swagger';
+import { ApiPropertyOptional } from '@nestjs/swagger';
 import { Expose, Transform } from 'class-transformer';
-import { IsNumber, IsObject, IsOptional } from 'class-validator';
+import { IsNumber, IsObject, IsOptional, IsString } from 'class-validator';
 import { transformToNumber, transformToObject } from '~/common/utils';
 
 export class ProductPaginateDTO {
   @Expose()
   @IsOptional()
+  @IsString()
+  @ApiPropertyOptional({
+    type: String,
+    description: 'Value for name.',
+    example: 'Short'
+  })
+  name?: string;
+
+  @Expose()
+  @IsOptional()
   @IsNumber()
   @Transform(transformToNumber)
-  @ApiProperty({
+  @ApiPropertyOptional({
     type: Number,
     description: 'Value for page.',
     example: 1

@@ -64,6 +64,18 @@ describe('ProductsController', () => {
     expect(response.data.length).toBe(1);
   });
 
+  it('should return not empty list', async () => {
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 0,
+      products: [{ user: {} }] as any
+    }));
+    const response = await controller.getAll({
+      name: faker.name.findName()
+    });
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(1);
+  });
+
   it('should return one record', async () => {
     jest.spyOn(service, 'getProduct').mockImplementationOnce(async () => ({} as any));
     const response = await controller.getProduct(faker.datatype.uuid());

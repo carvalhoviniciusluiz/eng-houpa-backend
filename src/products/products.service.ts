@@ -4,7 +4,15 @@ import { PrismaService } from '~/common/service';
 
 @Injectable()
 export class ProductsService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(private readonly prisma: PrismaService) {
+    // if (IS_DEV) {
+    //   this.prisma.$on<any>('query', (event: Prisma.QueryEvent) => {
+    //     console.log('Query: ' + event.query);
+    //     console.log('Params: ' + event.params);
+    //     console.log('Duration: ' + event.duration + 'ms');
+    //   });
+    // }
+  }
 
   async getProduct(productWhereUniqueInput: Prisma.ProductWhereUniqueInput): Promise<ProductModel | null> {
     return this.prisma.product.findUnique({

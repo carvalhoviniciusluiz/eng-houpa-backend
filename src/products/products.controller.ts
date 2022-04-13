@@ -28,12 +28,25 @@ export class ProductsController {
   @UseInterceptors(CacheInterceptor)
   @Get()
   async getAll(@Query() params: ProductPaginateDTO): Promise<ProductPaginateResponseDto> {
-    const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' } } = params;
-    const { count, products } = await this.productsService.getAll({
-      skip,
-      take,
-      orderBy
-    });
+    const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' }, name } = params;
+
+    const hasName = !!name;
+
+    const options = hasName
+      ? {
+          where: {
+            name: {
+              startsWith: name
+            }
+          }
+        }
+      : {
+          skip,
+          take,
+          orderBy
+        };
+
+    const { count, products } = await this.productsService.getAll(options);
     return new ProductPaginateResponseDto(products, take, skip, count);
   }
 
