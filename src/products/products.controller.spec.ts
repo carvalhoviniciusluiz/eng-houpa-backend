@@ -57,7 +57,7 @@ describe('ProductsController', () => {
   it('should return not empty list', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
       count: 0,
-      products: [{}] as any
+      products: [{ user: {} }] as any
     }));
     const response = await controller.getAll({});
     expect(response.meta).toBeDefined();

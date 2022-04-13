@@ -24,7 +24,10 @@ export class ProductsService {
       skip,
       take,
       where,
-      orderBy
+      orderBy,
+      include: {
+        user: true
+      }
     });
 
     return {
