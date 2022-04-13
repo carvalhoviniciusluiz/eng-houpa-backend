@@ -15,7 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { Product as ProductModel, User as UserModel } from '@prisma/client';
 import { GetUser } from '~/common/decorators';
-import { ProductPaginateDTO, ProductRequestDTO } from '~/products/dtos';
+import { ProductPaginateDTO, ProductPaginateResponseDto, ProductRequestDTO } from '~/products/dtos';
 import { ProductsService } from '~/products/products.service';
 
 @ApiTags('Products')
@@ -27,13 +27,14 @@ export class ProductsController {
 
   @UseInterceptors(CacheInterceptor)
   @Get()
-  async getAll(@Query() params: ProductPaginateDTO): Promise<ProductModel[]> {
+  async getAll(@Query() params: ProductPaginateDTO): Promise<ProductPaginateResponseDto> {
     const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' } } = params;
-    return this.productsService.getAll({
+    const { count, products } = await this.productsService.getAll({
       skip,
       take,
       orderBy
     });
+    return new ProductPaginateResponseDto(products, take, skip, count);
   }
 
   @Get('/:id')

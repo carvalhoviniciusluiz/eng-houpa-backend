@@ -15,6 +15,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ApiBearerAuth, ApiTags } from '@nestjs/swagger';
 import { User as UserModel } from '@prisma/client';
 import { UserPaginateDTO, UserRequestDTO } from '~/users/dtos';
+import { UserPaginateResponseDto } from '~/users/dtos/user-paginate.response.dto';
 import { UsersService } from '~/users/users.service';
 
 @ApiTags('Users')
@@ -26,13 +27,14 @@ export class UsersController {
 
   @UseInterceptors(CacheInterceptor)
   @Get()
-  async getAll(@Query() params: UserPaginateDTO): Promise<UserModel[]> {
+  async getAll(@Query() params: UserPaginateDTO): Promise<UserPaginateResponseDto> {
     const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' } } = params;
-    return this.userService.getAll({
+    const { users, count } = await this.userService.getAll({
       skip,
       take,
       orderBy
     });
+    return new UserPaginateResponseDto(users, take, skip, count);
   }
 
   @Get('/:id')

@@ -17,14 +17,20 @@ export class UsersService {
     take?: number;
     where?: Prisma.UserWhereInput;
     orderBy?: Prisma.UserOrderByWithRelationInput;
-  }): Promise<UserModel[]> {
+  }): Promise<{ count: number; users: UserModel[] }> {
     const { skip, take, where, orderBy } = params;
-    return this.prisma.user.findMany({
+    const count = await this.prisma.user.count();
+    const users = await this.prisma.user.findMany({
       skip,
       take,
       where,
       orderBy
     });
+
+    return {
+      count,
+      users
+    };
   }
 
   async create(data: Prisma.UserCreateInput): Promise<UserModel> {

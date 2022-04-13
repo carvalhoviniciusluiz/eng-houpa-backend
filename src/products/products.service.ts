@@ -17,14 +17,20 @@ export class ProductsService {
     take?: number;
     where?: Prisma.ProductWhereInput;
     orderBy?: Prisma.ProductOrderByWithRelationInput;
-  }): Promise<ProductModel[]> {
+  }): Promise<{ count: number; products: ProductModel[] }> {
     const { skip, take, where, orderBy } = params;
-    return this.prisma.product.findMany({
+    const count = await this.prisma.product.count();
+    const products = await this.prisma.product.findMany({
       skip,
       take,
       where,
       orderBy
     });
+
+    return {
+      count,
+      products
+    };
   }
 
   async create(data: Prisma.ProductCreateInput): Promise<ProductModel> {

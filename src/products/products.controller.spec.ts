@@ -1,7 +1,10 @@
+import { CacheInterceptor, CacheModule } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as faker from 'faker';
+import { PrismaService } from '~/common/service';
+import { CacheService } from '~/config';
 import { ProductsController } from '~/products/products.controller';
-import { ProductsModule } from '~/products/products.module';
 import { ProductsService } from '~/products/products.service';
 
 const userMock = jest.fn() as any;
@@ -18,9 +21,21 @@ describe('ProductsController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ProductsModule]
+      imports: [
+        CacheModule.registerAsync({
+          useClass: CacheService
+        })
+      ],
+      providers: [
+        {
+          provide: APP_INTERCEPTOR,
+          useClass: CacheInterceptor
+        },
+        ProductsService,
+        PrismaService
+      ],
+      controllers: [ProductsController]
     }).compile();
-
     controller = module.get<ProductsController>(ProductsController);
     service = module.get<ProductsService>(ProductsService);
   });
@@ -30,15 +45,23 @@ describe('ProductsController', () => {
   });
 
   it('should return empty list', async () => {
-    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => []);
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 0,
+      products: []
+    }));
     const response = await controller.getAll({});
-    expect(response.length).toBe(0);
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(0);
   });
 
   it('should return not empty list', async () => {
-    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => [{} as any]);
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 0,
+      products: [{}] as any
+    }));
     const response = await controller.getAll({});
-    expect(response.length).toBe(1);
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(1);
   });
 
   it('should return one record', async () => {

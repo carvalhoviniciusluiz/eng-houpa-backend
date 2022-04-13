@@ -1,7 +1,10 @@
+import { CacheInterceptor, CacheModule } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as faker from 'faker';
+import { PrismaService } from '~/common/service';
+import { CacheService } from '~/config';
 import { UsersController } from '~/users/users.controller';
-import { UsersModule } from '~/users/users.module';
 import { UsersService } from '~/users/users.service';
 
 const userMock = {
@@ -15,9 +18,21 @@ describe('UsersController', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [UsersModule]
+      imports: [
+        CacheModule.registerAsync({
+          useClass: CacheService
+        })
+      ],
+      providers: [
+        {
+          provide: APP_INTERCEPTOR,
+          useClass: CacheInterceptor
+        },
+        UsersService,
+        PrismaService
+      ],
+      controllers: [UsersController]
     }).compile();
-
     controller = module.get<UsersController>(UsersController);
     service = module.get<UsersService>(UsersService);
   });
@@ -27,15 +42,23 @@ describe('UsersController', () => {
   });
 
   it('should return empty list', async () => {
-    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => []);
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 0,
+      users: []
+    }));
     const response = await controller.getAll({});
-    expect(response.length).toBe(0);
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(0);
   });
 
   it('should return not empty list', async () => {
-    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => [{} as any]);
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 1,
+      users: [{}] as any
+    }));
     const response = await controller.getAll({});
-    expect(response.length).toBe(1);
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(1);
   });
 
   it('should return one record', async () => {

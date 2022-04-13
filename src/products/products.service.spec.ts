@@ -1,7 +1,9 @@
+import { CacheInterceptor, CacheModule } from '@nestjs/common';
+import { APP_INTERCEPTOR } from '@nestjs/core';
 import { Test, TestingModule } from '@nestjs/testing';
 import * as faker from 'faker';
 import { PrismaService } from '~/common/service';
-import { ProductsModule } from '~/products/products.module';
+import { CacheService } from '~/config';
 import { ProductsService } from '~/products/products.service';
 
 const productMock = {
@@ -17,7 +19,19 @@ describe('ProductsService', () => {
 
   beforeEach(async () => {
     const module: TestingModule = await Test.createTestingModule({
-      imports: [ProductsModule]
+      imports: [
+        CacheModule.registerAsync({
+          useClass: CacheService
+        })
+      ],
+      providers: [
+        {
+          provide: APP_INTERCEPTOR,
+          useClass: CacheInterceptor
+        },
+        ProductsService,
+        PrismaService
+      ]
     }).compile();
     service = module.get<ProductsService>(ProductsService);
     prisma = module.get<PrismaService>(PrismaService);
@@ -36,15 +50,19 @@ describe('ProductsService', () => {
   });
 
   it('should return empty list', async () => {
+    prisma.product.count = jest.fn().mockReturnValueOnce(0);
     prisma.product.findMany = jest.fn().mockReturnValueOnce([]);
     const response = await service.getAll({});
-    expect(response.length).toBe(0);
+    expect(response.count).toBe(0);
+    expect(response.products.length).toBe(0);
   });
 
   it('should return not empty list', async () => {
+    prisma.product.count = jest.fn().mockReturnValueOnce(1);
     prisma.product.findMany = jest.fn().mockReturnValueOnce([{}]);
     const response = await service.getAll({});
-    expect(response.length).toBe(1);
+    expect(response.count).toBe(1);
+    expect(response.products.length).toBe(1);
   });
 
   it('should create a new record', async () => {
