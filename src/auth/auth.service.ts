@@ -27,6 +27,12 @@ type SignInResponse = {
   refreshToken: string;
   refreshTokenExpiresIn: number;
   tokenType: string;
+  user: {
+    id: string;
+    email: string;
+    name: string;
+    updatedAt: Date;
+  };
 };
 
 @Injectable()
@@ -74,7 +80,13 @@ export class AuthService {
       accessTokenExpiresIn,
       refreshToken,
       refreshTokenExpiresIn,
-      tokenType: 'bearer'
+      tokenType: 'bearer',
+      user: {
+        id: user.id,
+        email: user.email,
+        name: user.name,
+        updatedAt: user.updatedAt
+      }
     };
   }
 
