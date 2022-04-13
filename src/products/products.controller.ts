@@ -20,7 +20,6 @@ import { ProductsService } from '~/products/products.service';
 
 @ApiTags('Products')
 @ApiBearerAuth()
-@UseGuards(AuthGuard('jwt'))
 @Controller('products')
 export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
@@ -50,6 +49,7 @@ export class ProductsController {
     return new ProductPaginateResponseDto(products, take, skip, count);
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Get('/:id')
   async getProduct(@Param('id') id: string): Promise<ProductModel> {
     return this.productsService.getProduct({
@@ -57,6 +57,7 @@ export class ProductsController {
     });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Post()
   async createProduct(@Body() productData: ProductRequestDTO, @GetUser() user: UserModel): Promise<ProductModel> {
     const { name, description, ref, price } = productData;
@@ -73,6 +74,7 @@ export class ProductsController {
     });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Patch('/:id')
   async updateProduct(
     @Param('id') id: string,
@@ -98,6 +100,7 @@ export class ProductsController {
     });
   }
 
+  @UseGuards(AuthGuard('jwt'))
   @Delete('/:id')
   async deleteProduct(@Param('id') id: string): Promise<ProductModel> {
     return this.productsService.delete({ id });
