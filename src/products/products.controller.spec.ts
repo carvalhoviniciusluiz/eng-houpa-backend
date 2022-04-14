@@ -19,7 +19,7 @@ describe('ProductsController', () => {
   let controller: ProductsController;
   let service: ProductsService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         CacheModule.registerAsync({
@@ -56,7 +56,7 @@ describe('ProductsController', () => {
 
   it('should return not empty list', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
-      count: 0,
+      count: 1,
       products: [{ user: {} }] as any
     }));
     const response = await controller.getAll({});
@@ -64,14 +64,49 @@ describe('ProductsController', () => {
     expect(response.data.length).toBe(1);
   });
 
-  it('should return not empty list', async () => {
+  it('should return not empty list filter by name', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
-      count: 0,
+      count: 1,
       products: [{ user: {} }] as any
     }));
     const response = await controller.getAll({
       name: faker.name.findName()
     });
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(1);
+  });
+
+  it('should return not empty sales list', async () => {
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 0,
+      products: [] as any
+    }));
+    const response = await controller.getProducts({}, { id: 1 } as any);
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(0);
+  });
+
+  it('should return not empty sales list', async () => {
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 1,
+      products: [{ user: {} }] as any
+    }));
+    const response = await controller.getProducts({}, { id: 1 } as any);
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(1);
+  });
+
+  it('should return not empty sales list filter by name', async () => {
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 1,
+      products: [{ user: {} }] as any
+    }));
+    const response = await controller.getProducts(
+      {
+        name: faker.name.findName()
+      },
+      { id: 1 } as any
+    );
     expect(response.meta).toBeDefined();
     expect(response.data.length).toBe(1);
   });

@@ -17,7 +17,7 @@ describe('ProductsService', () => {
   let service: ProductsService;
   let prisma: PrismaService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         CacheModule.registerAsync({

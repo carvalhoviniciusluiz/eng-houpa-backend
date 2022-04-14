@@ -25,12 +25,10 @@ export class ProductsController {
   constructor(private readonly productsService: ProductsService) {}
 
   @UseInterceptors(CacheInterceptor)
-  @Get()
+  @Get('/sales')
   async getAll(@Query() params: ProductPaginateDTO): Promise<ProductPaginateResponseDto> {
     const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' }, name } = params;
-
     const hasName = !!name;
-
     const options = hasName
       ? {
           where: {
@@ -43,6 +41,37 @@ export class ProductsController {
           skip,
           take,
           orderBy
+        };
+
+    const { count, products } = await this.productsService.getAll(options);
+    return new ProductPaginateResponseDto(products, take, skip, count);
+  }
+
+  @UseGuards(AuthGuard('jwt'))
+  @UseInterceptors(CacheInterceptor)
+  @Get()
+  async getProducts(
+    @Query() params: ProductPaginateDTO,
+    @GetUser() user: UserModel
+  ): Promise<ProductPaginateResponseDto> {
+    const { page: skip = 0, limit: take = 10, orderBy = { name: 'asc' }, name } = params;
+    const hasName = !!name;
+    const options = hasName
+      ? {
+          where: {
+            name: {
+              startsWith: name
+            },
+            userId: user.id
+          }
+        }
+      : {
+          skip,
+          take,
+          orderBy,
+          where: {
+            userId: user.id
+          }
         };
 
     const { count, products } = await this.productsService.getAll(options);

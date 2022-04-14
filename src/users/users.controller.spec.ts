@@ -16,7 +16,7 @@ describe('UsersController', () => {
   let controller: UsersController;
   let service: UsersService;
 
-  beforeEach(async () => {
+  beforeAll(async () => {
     const module: TestingModule = await Test.createTestingModule({
       imports: [
         CacheModule.registerAsync({
