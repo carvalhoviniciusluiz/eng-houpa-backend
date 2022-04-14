@@ -1,4 +1,5 @@
 import {
+  BadRequestException,
   Body,
   CacheInterceptor,
   Controller,
@@ -111,22 +112,29 @@ export class ProductsController {
     @GetUser() user: UserModel
   ): Promise<ProductModel> {
     const { name, description, ref, price } = productData;
-    return this.productsService.update({
-      where: {
-        id
-      },
-      data: {
-        name,
-        description,
-        ref,
-        price,
-        user: {
-          connect: {
-            id: user.id
+    try {
+      return await this.productsService.update({
+        where: {
+          id
+        },
+        data: {
+          name,
+          description,
+          ref,
+          price,
+          user: {
+            connect: {
+              id: user.id
+            }
           }
         }
+      });
+    } catch (error) {
+      if (error.code === 'P2002') {
+        throw new BadRequestException('A new product cannot be created with this Ref');
       }
-    });
+      throw error;
+    }
   }
 
   @UseGuards(AuthGuard('jwt'))

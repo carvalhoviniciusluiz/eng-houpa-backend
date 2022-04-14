@@ -68,6 +68,6 @@ describe('AuthController', () => {
       acceptTerms: false,
       password: faker.internet.password()
     });
-    await expect(promise).rejects.toThrow('');
+    await expect(promise).rejects.toThrowError();
   });
 });

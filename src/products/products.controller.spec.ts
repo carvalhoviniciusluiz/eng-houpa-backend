@@ -129,6 +129,43 @@ describe('ProductsController', () => {
     expect(response).toEqual({});
   });
 
+  it('should update and throw P2002 error', async () => {
+    class RequestError extends Error {
+      code = 'P2002';
+    }
+    jest.spyOn(service, 'update').mockImplementationOnce(async () => {
+      throw new RequestError();
+    });
+    const promise = controller.updateProduct(
+      '123',
+      {
+        name: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: Number(faker.commerce.price()),
+        ref: faker.commerce.productAdjective()
+      },
+      {} as any
+    );
+    await expect(promise).rejects.toThrow('A new product cannot be created with this Ref');
+  });
+
+  it('should update and throw  error', async () => {
+    jest.spyOn(service, 'update').mockImplementationOnce(async () => {
+      throw new Error();
+    });
+    const promise = controller.updateProduct(
+      '123',
+      {
+        name: faker.commerce.productName(),
+        description: faker.commerce.productDescription(),
+        price: Number(faker.commerce.price()),
+        ref: faker.commerce.productAdjective()
+      },
+      {} as any
+    );
+    await expect(promise).rejects.toThrowError();
+  });
+
   it('should delete record', async () => {
     jest.spyOn(service, 'delete').mockImplementationOnce(async () => ({} as any));
     const response = await controller.deleteProduct(faker.datatype.uuid());
