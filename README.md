@@ -15,6 +15,7 @@ __IMPORTANTE__ existe uma demo publicada no heroku [clicar aqui](https://eng-hou
     - [Sobre o projeto](#about)
         - [Requisitos](#requirements)
         - [Instalação](#install)
+        - [Banco de Dados](#db)
         - [Tests](#tests)
         - [Rodando o Projeto](#run)
         - [Test API](#api)
@@ -273,6 +274,21 @@ yarn prisma:db:push
 #> popula com dados de teste
 yarn prisma:db:seed
 ```
+
+### **Banco de Dados:** <a name="db"></a>
+
+__IMPORTANTE__: É possível conectar-se ao banco de produção usado no ambiente do Heroku apartir de qualquer client de conexão de MySql.
+
+Dados de acesso:
+
+| Param | Value
+|---------|--------------
+| HOST | us-cdbr-east-05.cleardb.net
+| USER | bc566598fb7dd8
+| PASSWORD | ed4199d1
+| DBNAME | heroku_437694f837420de
+
+__OBS__ Para mais informações veja o valor presente na variável [DATABASE_URL](.env.example)
 
 ### **Test:** <a name="tests"></a>
 No terminal faça:
