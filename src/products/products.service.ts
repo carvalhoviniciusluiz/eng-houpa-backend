@@ -32,7 +32,8 @@ export class ProductsService {
       where,
       orderBy,
       include: {
-        user: true
+        user: true,
+        pictures: true
       }
     });
 

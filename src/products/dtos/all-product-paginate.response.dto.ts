@@ -25,7 +25,7 @@ type ProductRow = {
   ];
 };
 
-export class ProductPaginateResponseDto extends PaginatedResultDTO {
+export class AllProductPaginateResponseDto extends PaginatedResultDTO {
   @ApiProperty({
     example: []
   })
@@ -48,12 +48,17 @@ export class ProductPaginateResponseDto extends PaginatedResultDTO {
           name: productRow.user.name,
           updatedAt: productRow.user.updatedAt
         },
-        pictures: productRow?.pictures.map(picture => ({
-          id: picture.id,
-          imagePath: picture.imagePath,
-          cover: picture.cover,
-          createdAt: picture.createdAt
-        }))
+        pictures: productRow?.pictures
+          .map(picture => {
+            return picture.cover
+              ? {
+                  id: picture.id,
+                  imagePath: picture.imagePath,
+                  createdAt: picture.createdAt
+                }
+              : null;
+          })
+          .filter(Boolean)
       };
     });
   }
