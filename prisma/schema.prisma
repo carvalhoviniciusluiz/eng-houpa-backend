@@ -21,7 +21,7 @@ model User {
 
   passwordHashed String? @map("password_hashed") @db.VarChar(191)
 
-  Products Product[]
+  products Product[]
 
   @@index([email, name])
   @@map("users")
@@ -40,6 +40,22 @@ model Product {
   userId String @map("user_id")
   user   User   @relation(fields: [userId], references: [id])
 
-  @@index([name, ref])
+  pictures ProductPicture[]
+
+  @@index([name])
   @@map("products")
+}
+
+model ProductPicture {
+  id        String    @id @default(uuid())
+  createdAt DateTime? @default(now()) @map("created_at")
+  deleted   DateTime?
+
+  product   Product? @relation(fields: [productId], references: [id])
+  productId String?  @map("product_id")
+
+  imagePath String? @db.VarChar(191)
+  cover     Boolean
+
+  @@map("product_pictures")
 }
