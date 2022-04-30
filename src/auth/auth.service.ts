@@ -27,12 +27,6 @@ type SignInResponse = {
   refreshToken: string;
   refreshTokenExpiresIn: number;
   tokenType: string;
-  user: {
-    id: string;
-    email: string;
-    name: string;
-    updatedAt: Date;
-  };
 };
 
 @Injectable()
@@ -61,7 +55,12 @@ export class AuthService {
       throw new UnauthorizedException();
     }
 
-    const payload = { email };
+    const payload = {
+      id: user.id,
+      email: user.email,
+      name: user.name,
+      updatedAt: user.updatedAt
+    };
     const accessToken = this.jwtService.sign(payload);
     const accessTokenDecoded = this.jwtService.decode(accessToken) as AccessTokenDecoded;
     const accessTokenExpiresIn = accessTokenDecoded.exp;
@@ -80,13 +79,7 @@ export class AuthService {
       accessTokenExpiresIn,
       refreshToken,
       refreshTokenExpiresIn,
-      tokenType: 'bearer',
-      user: {
-        id: user.id,
-        email: user.email,
-        name: user.name,
-        updatedAt: user.updatedAt
-      }
+      tokenType: 'bearer'
     };
   }
 
