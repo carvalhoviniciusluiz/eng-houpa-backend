@@ -48,7 +48,7 @@ export class ProductPaginateResponseDto extends PaginatedResultDTO {
           name: productRow.user.name,
           updatedAt: productRow.user.updatedAt
         },
-        pictures: productRow?.pictures.map(picture => ({
+        pictures: productRow?.pictures?.map(picture => ({
           id: picture.id,
           imagePath: picture.imagePath,
           cover: picture.cover,

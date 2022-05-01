@@ -8,8 +8,7 @@ import { ProductsService } from '~/products/products.service';
 
 const productMock = {
   name: faker.commerce.productName(),
-  ref: faker.commerce.productAdjective(),
-  price: faker.commerce.price(),
+  description: faker.commerce.productDescription(),
   user: jest.fn() as any
 };
 

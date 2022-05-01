@@ -44,7 +44,7 @@ describe('ProductsController', () => {
     expect(controller).toBeDefined();
   });
 
-  it('should return empty list', async () => {
+  it('should return empty sales list', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
       count: 0,
       products: []
@@ -54,7 +54,7 @@ describe('ProductsController', () => {
     expect(response.data.length).toBe(0);
   });
 
-  it('should return not empty list', async () => {
+  it('should return not empty sales list', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
       count: 1,
       products: [{ user: {} }] as any
@@ -64,10 +64,20 @@ describe('ProductsController', () => {
     expect(response.data.length).toBe(1);
   });
 
-  it('should return not empty list filter by name', async () => {
+  it('should return cover item', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
       count: 1,
-      products: [{ user: {} }] as any
+      products: [{ user: {}, pictures: [{ cover: true }] }] as any
+    }));
+    const response = await controller.getAll({});
+    expect(response.meta).toBeDefined();
+    expect(response.data.length).toBe(1);
+  });
+
+  it('should return not empty sales list filter by name', async () => {
+    jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
+      count: 1,
+      products: [{ user: {}, pictures: [{}] }] as any
     }));
     const response = await controller.getAll({
       name: faker.name.findName()
@@ -76,17 +86,17 @@ describe('ProductsController', () => {
     expect(response.data.length).toBe(1);
   });
 
-  it('should return not empty sales list', async () => {
+  it('should return empty list', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
       count: 0,
-      products: [] as any
+      products: []
     }));
     const response = await controller.getProducts({}, { id: 1 } as any);
     expect(response.meta).toBeDefined();
     expect(response.data.length).toBe(0);
   });
 
-  it('should return not empty sales list', async () => {
+  it('should return not empty list', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
       count: 1,
       products: [{ user: {} }] as any
@@ -96,10 +106,10 @@ describe('ProductsController', () => {
     expect(response.data.length).toBe(1);
   });
 
-  it('should return not empty sales list filter by name', async () => {
+  it('should return not empty list filter by name', async () => {
     jest.spyOn(service, 'getAll').mockImplementationOnce(async () => ({
       count: 1,
-      products: [{ user: {} }] as any
+      products: [{ user: {}, pictures: [{}] }] as any
     }));
     const response = await controller.getProducts(
       {

@@ -43,7 +43,6 @@ __DETALHAMENTO__
 | MYSQL_PORT | Define a porta usada pelo banco de dados.
 | JWT_SECRET | Define a palavra-secreta usada para gerar o token de acesso.
 | JWT_SECRET_EXPIRES_IN | Define o tempo de vida do token.
-| JWT_SECRET_REFRESHTOKEN | Define a palavra-secreta usada para gerar o refresh-token.
 | JWT_SECRET_REFRESHTOKEN_EXPIRES_IN | Define o tempo de vida do refresh-token.
 | DATABASE_URL | Define a url de acesso ao banco de dados.
 
